@@ -1,6 +1,6 @@
 # 필기노트
 
-## React Redux
+## React Redux 란?
 
 ![1_kruPynfRlo9J-JoWUV5LDQ](https://user-images.githubusercontent.com/32591477/85845799-ce014080-b7df-11ea-90a2-1bf1cf02eaa2.png)
 `
@@ -175,3 +175,13 @@ export default class DisplayNumber extends Component {
 
 각각의 컴포넌트들을 `props` 로 연결하여 뎁스별로 아주 긴 연결을 거쳐야한다. 컴포넌트 뎁스가 예제보다 긴 상황이라면 피로한 작업이 될 것이다.
 또한 `props`가 전파되며 체인에 연결된 모든 컴포넌트를 호출하여 성능에 좋지않은 영향을 준다.
+
+## React Redux
+
+### Redux 인스톨
+
+다음 명령어로 인스톨한다.
+
+```
+npm install redux
+```
