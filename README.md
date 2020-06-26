@@ -185,3 +185,21 @@ export default class DisplayNumber extends Component {
 ```
 npm install redux
 ```
+
+### Redux DevTools 인스톨 및 세팅
+
+[Redux DevTools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd/related) 확장 프로그램을 chrome에 인스톨 한다.
+
+`store.js`에서 다음과 같은 구문을 마지막 인자로 넘겨준다.
+
+`window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()`
+
+``` javascript
+import {createStore} from 'redux';
+
+export default createStore(
+  function(state, action) { // Reducer
+    return state;
+  }, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+)
+```
