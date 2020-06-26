@@ -203,3 +203,100 @@ export default createStore(
   }, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 )
 ```
+
+### Redux로 대이터 관리하기
+
+Redux가 없을 때에 체인으로 주고받았던 `number` 값을 이제 store.js에서 관리하도록 한다.
+
+#### 1. Store 세팅
+
+``` javascript 
+// store.js
+
+import {createStore} from 'redux';
+
+export default createStore(
+  function(state, action) { // Reducer
+    if(state === undefined){ // state가 비었을때
+      return {number: 0} // number 프로퍼티 생성
+    }
+    if(action.type === 'INCREMENT'){ // INCREMENT action이 발생했을 때
+      return {...state, number:state.number + action.size} // action을 통해 전달된 size를 number 값에 더한다.
+    }
+
+    return state;
+  }, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__() 
+)
+```
+
+#### 2. AddNumber에서 Store 호출
+
+`AddNumber` 컴포넌트에서 클릭 이벤트 발생 시 `INCREMENT`란 이름으로 Store에 size를 넘겨준다. 
+
+``` jsx
+// AddNumber.jsx
+
+import React, {Component} from 'react';
+import store from '../store';
+
+export default class AddNumber extends Component {
+  state = {
+    size: 1
+  }
+
+  render() {
+    return (
+      <div>
+        <h1>Add Number</h1>
+        <input 
+          type="button"
+          value="+"
+          onClick={
+            () => {
+              store.dispatch({type:'INCREMENT', size: this.state.size}) // INCREMENT란 이름으로 size를 store에 전달
+            }
+          }
+        />
+        <input 
+          type="text"
+          value={this.state.size}
+          onChange={
+            e => this.setState({size: Number(e.target.value)})
+          }
+        />
+      </div>
+    )
+  }
+}
+```
+
+#### 3. DisplayNumber에서 store.number 표시
+
+``` javascript
+// DisplayNumber.jsx
+
+import React, {Component} from "react";
+import store from "../store";
+
+export default class DisplayNumber extends Component {
+  state = {
+    number: store.getState().number
+  }
+  
+  constructor(props){
+    super(props);
+    store.subscribe(() => {
+      this.setState({number: store.getState().number});
+    })
+  }
+  
+  render() {
+    return (
+      <div>
+        <h1>Display Number</h1>
+        <input type="text" value={this.state.number} readOnly/>
+      </div>
+    )
+  }
+}
+```
