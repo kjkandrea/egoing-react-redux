@@ -585,3 +585,7 @@ function mapReduxDispatchToReactProps(dispatch) {
 }
 export default connect(null, mapReduxDispatchToReactProps)(AddNumber);
 ```
+
+### 내맘대로 추가 과제 : DECREMENT 만들어보기
+
+추가로 `DECREMENT` 기능을 구현해보았다
