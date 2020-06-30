@@ -537,11 +537,32 @@ export default connect(mapReduxStateToProps, mapReduxDispatchToReactProps)(Displ
 ``` jsx
 // containers/DisplayNumber.jsx
 
+import DisplayNumber from "../components/DisplayNumber";
+import {connect} from 'react-redux';
 function mapReduxStateToProps(state) {
   return {
-    number: this.state.number
+    number: state.number
   }
 }
 
-export default connect(mapReduxStateToProps, mapReduxDispatchToReactProps)(DisplayNumber);
+export default connect(mapReduxStateToProps)(DisplayNumber);
+```
+
+`containers/DisplayNumber.jsx`의 connect(?)의 두번째인자는 공급해줄 필요가 없기때문에 DisplayNumber의 수정은 완료되었다.
+
+##### mapReduxDispatchToReactProps에 이벤트와 dispatch 전달하기
+
+`containers/AddNumber.jsx`에서 다음과같이 구현한다.
+
+``` jsx
+// containers/AddNumber.jsx
+
+import AddNumber from "../components/AddNumber";
+import {connect} from 'react-redux';
+function mapReduxDispatchToReactProps(dispatch) {
+  return {
+    onClick: (size) => dispatch({type:'INCREMENT', size:size})
+  }
+}
+export default connect(null, mapReduxDispatchToReactProps)(AddNumber);
 ```

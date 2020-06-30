@@ -3,9 +3,8 @@ import DisplayNumber from "../components/DisplayNumber";
 import {connect} from 'react-redux';
 function mapReduxStateToProps(state) {
   return {
-    number: this.state.number
+    number: state.number
   }
 }
-function mapReduxDispatchToReactProps() {}
 
-export default connect(mapReduxStateToProps, mapReduxDispatchToReactProps)(DisplayNumber);
+export default connect(mapReduxStateToProps)(DisplayNumber);
