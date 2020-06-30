@@ -530,3 +530,18 @@ function mapReduxDispatchToReactProps() {}
 export default connect(mapReduxStateToProps, mapReduxDispatchToReactProps)(DisplayNumber);
 ```
 
+##### mapReduxStateToProps에 인자 number 전달하기
+
+다음과 같이 `mapReduxStateToProps`를 통해 number를 전달하여 connect(?)()의 **?** 부분에 첫번째 인자로 전달한다.
+
+``` jsx
+// containers/DisplayNumber.jsx
+
+function mapReduxStateToProps(state) {
+  return {
+    number: this.state.number
+  }
+}
+
+export default connect(mapReduxStateToProps, mapReduxDispatchToReactProps)(DisplayNumber);
+```
