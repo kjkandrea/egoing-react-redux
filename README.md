@@ -449,21 +449,21 @@ export default connect()(AddNumber);
  리덕스의 저자 gaearon 의 레포지토리에서 `connect()()`의 원형 `connect.js` 를 엿볼 수 있다.
 
 ``` jsx
-// connect() is a function that injects Redux-related props into your component.
-// You can inject data and callbacks that change that data by dispatching actions.
+// connect() 는 Redux와 연관된 props를 component에 삽입하는 함수입니다.
+// dispatch actions을 통해 data를 변경하는 data나 Callback를 삽입할 수 있습니다.
 function connect(mapStateToProps, mapDispatchToProps) {
   // It lets us inject component as the last step so people can use it as a decorator.
   // Generally you don't need to worry about it.
   return function (WrappedComponent) {
-    // It returns a component
+    // component를 return
     return class extends React.Component {
       render() {
         return (
-          // that renders your component
+          // 여기서 컴포넌트가 렌더링 된다.
           <WrappedComponent
             {/* with its props  */}
             {...this.props}
-            {/* and additional props calculated from Redux store */}
+            {/* Redux store 에서 계산된 props */}
             {...mapStateToProps(store.getState(), this.props)}
             {...mapDispatchToProps(store.dispatch, this.props)}
           />
@@ -471,22 +471,41 @@ function connect(mapStateToProps, mapDispatchToProps) {
       }
       
       componentDidMount() {
-        // it remembers to subscribe to the store so it doesn't miss updates
+        // 업데이트를 놓치지않도록 store를 구독해야 합니다.
         this.unsubscribe = store.subscribe(this.handleChange.bind(this))
       }
       
       componentWillUnmount() {
-        // and unsubscribe later
+        // 미지막에 구독 취소
         this.unsubscribe()
       }
     
       handleChange() {
-        // and whenever the store state changes, it re-renders.
+        // store 가 변경될 때마다 다시 렌더링 됩니다.
         this.forceUpdate()
       }
     }
   }
 }
+
+// 예시
+
+// The purpose of connect() is that you don't have to think about
+// subscribing to the store or perf optimizations yourself, and
+// instead you can specify how to get props based on Redux store state:
+
+const ConnectedCounter = connect(
+  // Given Redux state, return props
+  state => ({
+    value: state.counter,
+  }),
+  // Given Redux dispatch, return callback props
+  dispatch => ({
+    onIncrement() {
+      dispatch({ type: 'INCREMENT' })
+    }
+  })
+)(Counter)
 ```
 
 `connect.js` 의 첫번째 리턴값은 함수이며, 두번째 인자로 `WrappedComponent`를 넘겨주어 인자로 받은 컴포넌트를 리턴한다.
