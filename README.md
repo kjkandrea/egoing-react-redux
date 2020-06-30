@@ -1,11 +1,11 @@
 # 필기노트
 
-## React Redux 란?
+## Redux 란?
 
 ![1_kruPynfRlo9J-JoWUV5LDQ](https://user-images.githubusercontent.com/32591477/85845799-ce014080-b7df-11ea-90a2-1bf1cf02eaa2.png)
 `
 
-React Redux는 수많은 데이터의 흐름을 `Store`라는 커다란 단위를 통해 **집중관리** 한다.
+Redux는 수많은 데이터의 흐름을 `Store`라는 커다란 단위를 통해 **집중관리** 한다.
 
 * 데이터 중앙관리가 없을때의 데이터의 흐름은 컴포넌트 간 데이터를 주고받는 **소문** 과도 같다.
 * 데이터 중앙관리가 있을때의 데이터의 흐름은 이미지와 같이 `Store`가 각 컴포넌트에 전파한다. **방송국** 이 존재하는것과 같다.
@@ -176,7 +176,7 @@ export default class DisplayNumber extends Component {
 각각의 컴포넌트들을 `props` 로 연결하여 뎁스별로 아주 긴 연결을 거쳐야한다. 컴포넌트 뎁스가 예제보다 긴 상황이라면 피로한 작업이 될 것이다.
 또한 `props`가 전파되며 체인에 연결된 모든 컴포넌트를 호출하여 성능에 좋지않은 영향을 준다.
 
-## React Redux
+## Redux
 
 ### Redux 인스톨
 
@@ -393,3 +393,5 @@ export default class extends Component {
 ##### 변경된 점
 
 `Container/AddNumber.jsx`가 리덕스 없이도 재사용 가능한 **부품으로서의 가치가 있는 완전한 프레젠테이션 컴포넌트**가 되었다.
+
+## React-Redux
