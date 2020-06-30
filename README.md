@@ -589,3 +589,5 @@ export default connect(null, mapReduxDispatchToReactProps)(AddNumber);
 ### 내맘대로 추가 과제 : DECREMENT 만들어보기
 
 추가로 `DECREMENT` 기능을 구현해보았다
+
+[브랜치 바로가기](https://github.com/kjkandrea/egoing-react-redux/tree/react-redux-extends)
