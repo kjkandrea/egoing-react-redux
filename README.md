@@ -492,3 +492,41 @@ function connect(mapStateToProps, mapDispatchToProps) {
 `connect.js` 의 첫번째 리턴값은 함수이며, 두번째 인자로 `WrappedComponent`를 넘겨주어 인자로 받은 컴포넌트를 리턴한다.
 
 props를 넘겨받아 넘겨주는것 또한 처리해준다.
+
+### connect(?)(component) : ?는 무엇인가
+
+`connect(?)(component)`의 ? 부분에는 두개의 인자가 들어간다.
+
+1. mapStateToProps
+2. mapDispatchToProps
+
+[Connect: Extracting Data with mapStateToProps](https://react-redux.js.org/using-react-redux/connect-mapstate)
+
+[Connect: Dispatching Actions with mapDispatchToProps](https://react-redux.js.org/using-react-redux/connect-mapdispatch)
+
+#### mapStateToProps 개념 이해
+
+`mapStateToProps`는 connect함수에 첫번째 인수로 들어가는 함수 혹은 객체 이다.
+
+* store가 업데이트가 될때 마다 자동적으로 호출이 된다
+* 이를 원하지 않는다면 null 혹은 undefined값을 제공해야한다.
+
+#### mapDispatchToProps 개념 이해
+
+`mapDispatchToProps`는 connect함수의 두번째 인자로 사용된다.
+store에 접근한 컴포넌트가 store의 상태를 바꾸기 위해
+**dispatch를 사용할수 있게 만들어준다.**
+
+#### 시작
+
+mapStateToProps, mapDispatchToProps는 햇갈릴 수 있는 네이밍이기에 각 `mapReduxStateToProps`, `mapReduxDispatchToReactProps` 로 변경해주고 다음과 같이 인자로 넘겨주어보자.
+
+``` jsx
+// containers/DisplayNumber.jsx
+
+function mapReduxStateToProps(state) {}
+function mapReduxDispatchToReactProps() {}
+
+export default connect(mapReduxStateToProps, mapReduxDispatchToReactProps)(DisplayNumber);
+```
+
