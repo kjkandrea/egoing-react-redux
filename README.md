@@ -394,4 +394,10 @@ export default class extends Component {
 
 `Container/AddNumber.jsx`가 리덕스 없이도 재사용 가능한 **부품으로서의 가치가 있는 완전한 프레젠테이션 컴포넌트**가 되었다.
 
+### React와 Redux
+
+리엑트와 리덕스를 조합하는것은 데이터 전달을 효율적으로 바꾸어주는 성취가 있었다.
+허나 리엑트와 리덕스를 콜라보하는 과정에서 콘테이너를 만든 작업,dispatch 등 많은 일이 수반된다.
+`React-Redux`를 사용하여 이 작업을 보다 쉽게 할 수 있다.
+
 ## React-Redux
