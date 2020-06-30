@@ -300,3 +300,96 @@ export default class DisplayNumber extends Component {
   }
 }
 ```
+
+### react 컴포넌트에서 redux에 종속된 기능을 제거
+
+`Components/AddNumber.jsx` 는 자신의 기능을 수행하나, 현재 코드를 개선하여 부품으로써의 가치를 부여해줄 수 있다. 현재는 redux에 전적으로 의존하는 컴포넌트이나 `랩핑` 이라는 방법을 사용하여 종속성을 제거해보자.
+
+#### 콘텐츠 랩핑
+
+방법은 `Containers/AddNumber` 라는 일종의 `래퍼`를 `AddNumberRoot`와 `AddNumber`사이에 끼워넣어 Redux의 state를 중개하는 역할을 하게하는 것이다.
+
+```
+--| AddNumberRoot/
+----| Containers/AddNumber
+------| AddNumber
+```
+
+#### 랩핑하기
+
+src 디렉토리에 `Containers/AddNumber.jsx` 파일을 추가한 후 다음과 같이 AddNumber를 출력하도록 만들어준다.
+
+``` jsx
+// Containers/AddNumber.jsx
+import AddNumber from "../components/AddNumber";
+import React, { Component } from "react";
+
+export default class extends Component {
+  render(){
+    return <AddNumber />
+  }
+}
+```
+
+그 후 `AddNumberRoot` 컴포넌트에서 `AddNumber Component` 대신 `AddNumber Container` 를 읽어들여 표시한다.
+
+``` jsx
+// AddNumberRoot.jsx
+import AddNumber from "../containers/AddNumber";
+```
+
+이제 `Containers/AddNumber.jsx` 에서 Redux의 state를 중개하도록 변경하여보자.
+
+#### Redux state 중개하기
+
+`Components/AddNumber.jsx` 가 직접 소통하던 `store.dispatch` 구문을 다음과 같이 수정하여 이벤트버블링으로 `Containers/AddNumber.jsx` 로 넘겨준다.
+
+``` jsx
+import React, {Component} from 'react';
+
+export default class AddNumber extends Component {
+  state = {
+    size: 1
+  }
+
+  render() {
+    return (
+      <div>
+        <h1>Add Number</h1>
+        <input 
+          type="button"
+          value="+"
+          onClick={
+            () => {
+              this.props.onClick(this.state.size)
+            }
+          }
+        />
+
+... // 아래부분은 생략
+```
+
+`Containers/AddNumber.jsx` 가 리덕스와 상호작용하도록 변경하자.
+
+``` jsx
+// Containers/AddNumber.jsx
+import AddNumber from "../components/AddNumber";
+import React, { Component } from "react";
+import store from '../store';
+
+export default class extends Component {
+  render(){
+    return (
+      <AddNumber 
+        onClick={
+          (size) => store.dispatch({type:'INCREMENT', size: size})
+        } 
+      />
+    )
+  }
+}
+```
+
+##### 변경된 점
+
+`Container/AddNumber.jsx`가 리덕스 없이도 재사용 가능한 **부품으로서의 가치가 있는 완전한 프레젠테이션 컴포넌트**가 되었다.
