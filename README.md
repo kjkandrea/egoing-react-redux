@@ -397,7 +397,6 @@ export default class extends Component {
 ### React와 Redux
 
 리엑트와 리덕스를 조합하는것은 데이터 전달을 효율적으로 바꾸어주는 성취가 있었다.
-허나 리엑트와 리덕스를 콜라보하는 과정에서 콘테이너를 만든 작업,dispatch 등 많은 일이 수반된다.
 허나 리엑트와 리덕스를 콜라보하는 과정에서 콘테이너를 만든 작업, dispatch 등 많은 일이 수반된다.
 `React-Redux`를 사용하여 이 작업을 보다 쉽게 할 수 있다.
 
@@ -409,3 +408,87 @@ export default class extends Component {
 npm install react-redux
 ```
 
+### Provider
+
+react로 작성된 컴포넌트들을 `Provider`안에 넣으면 하위 컴포넌트들이 `Provider`를 통해 redux store에 접근이 가능해진다.
+
+`index.js`에서 다음과 같이 `Provider` 를 import해 `<App/>`을 감싸주자.
+
+``` jsx
+//index.js
+import { Provider } from 'react-redux';
+import store from './store'
+
+ReactDOM.render(
+  <React.StrictMode>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </React.StrictMode>,
+  document.getElementById('root')
+);
+```
+
+### AddNumber container 리펙터링
+
+`Container/AddNumber.jsx`를 다음과 같이 변경하여준다.
+
+``` jsx
+import AddNumber from "../components/AddNumber";
+import {connect} from 'react-redux';
+export default connect()(AddNumber);
+```
+
+이게 끝이다. 기존의 장황했던 코드들을 `export default connect()(AddNumber);` 로 대체한다. 어떻게 이렇게 마법같은 일이 일어날까?
+
+[기존의 코드가 궁금하다면](https://github.com/kjkandrea/egoing-react-redux/blob/react-with-redux/src/containers/AddNumber.jsx)
+
+### connect 함수의 원형 엿보기
+
+ [gaearon/connect.js](https://gist.github.com/gaearon/1d19088790e70ac32ea636c025ba424e)
+ 리덕스의 저자 gaearon 의 레포지토리에서 `connect()()`의 원형 `connect.js` 를 엿볼 수 있다.
+
+``` jsx
+// connect() is a function that injects Redux-related props into your component.
+// You can inject data and callbacks that change that data by dispatching actions.
+function connect(mapStateToProps, mapDispatchToProps) {
+  // It lets us inject component as the last step so people can use it as a decorator.
+  // Generally you don't need to worry about it.
+  return function (WrappedComponent) {
+    // It returns a component
+    return class extends React.Component {
+      render() {
+        return (
+          // that renders your component
+          <WrappedComponent
+            {/* with its props  */}
+            {...this.props}
+            {/* and additional props calculated from Redux store */}
+            {...mapStateToProps(store.getState(), this.props)}
+            {...mapDispatchToProps(store.dispatch, this.props)}
+          />
+        )
+      }
+      
+      componentDidMount() {
+        // it remembers to subscribe to the store so it doesn't miss updates
+        this.unsubscribe = store.subscribe(this.handleChange.bind(this))
+      }
+      
+      componentWillUnmount() {
+        // and unsubscribe later
+        this.unsubscribe()
+      }
+    
+      handleChange() {
+        // and whenever the store state changes, it re-renders.
+        this.forceUpdate()
+      }
+    }
+  }
+}
+```
+
+`connect.js` 의 첫번째 리턴값은 함수이며, 두번째 인자로 `WrappedComponent`를 넘겨주어 인자로 받은 컴포넌트를 리턴한다.
+
+props를 넘겨받아 넘겨주는것 또한 처리해준다.
