@@ -14,7 +14,7 @@ export default class AddNumber extends Component {
           value="+"
           onClick={
             () => {
-              this.props.onClick(this.state.size)
+              this.props.onClickPlus(this.state.size)
             }
           }
         />
@@ -23,6 +23,15 @@ export default class AddNumber extends Component {
           value={this.state.size}
           onChange={
             e => this.setState({size: Number(e.target.value)})
+          }
+        />
+        <input 
+          type="button"
+          value="-"
+          onClick={
+            () => {
+              this.props.onClickMinus(this.state.size)
+            }
           }
         />
       </div>
